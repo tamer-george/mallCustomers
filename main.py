@@ -9,17 +9,17 @@ pd.set_option("display.width", 3000)
 mall_customers_df = eda.import_dataset("Mall_Customers.csv")
 
 
-"""
-eda.display_column_types(mall_customers_df)
-Numerical Columns: ['CustomerID', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']
-Categorical Columns: ['Gender']
----------------------------------------------------------------------------------------------------------
-eda.display_describe_data(mall_customers_df)
-print(f"Number of Customers {200}".title())
-print(f"The average annual income per customer {60.56}".title())
-print(f"The median age of customers {36}".title() )
-print(f"The standard deviations for age {13.97} and the std for annual income {26.26}".title() )
-"""
+# eda.display_column_types(mall_customers_df)
+# Numerical Columns: ['CustomerID', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+# Categorical Columns: ['Gender']
+
+# eda.display_describe_data(mall_customers_df)
+# print(f"Number of Customers {200}".title())
+# print(f"The average annual income per customer {60.56}".title())
+# print(f"The median age of customers {36}".title() )
+# print(f"The standard deviations for age {13.97} and the std for annual income {26.26}".title()
+
+
 # Numerical Columns: ['CustomerID', 'Age', 'Annual Income (k$)', 'Spending Score (1-100)']
 # Categorical Columns: ['Gender']
 # eda.visualize_distribution_of_numeric_col(mall_customers_df, "Annual Income (k$)", 6)
@@ -54,30 +54,28 @@ print(f"The standard deviations for age {13.97} and the std for annual income {2
 
 # eda.vis_heatmap(mall_customers_df)
 
+"""
+pvt_tbl = pd.pivot_table(mall_customers_df, index=["Age", "Gender"], aggfunc={"Annual Income (k$)": np.mean})
+# print(pvt_tbl.head(10))
 
-# pvt_table = pd.pivot_table(mall_customers_df,index=["Age", "Gender"], aggfunc={"Annual Income (k$)": np.mean})
-# print(pvt_table.head(10))
-
-# avg_income = mall_customers_df.groupby(["Age", "Gender"])["Annual Income (k$)"].mean().round(2)
+avg_income = mall_customers_df.groupby(["Age", "Gender"], as_index=False)["Annual Income (k$)"].mean().round(2)
 # print(avg_income)
 
 
-# reshape_pvt = pd.pivot_table(mall_customers_df, index=["Age"], columns=["Gender"]).fillna("No Data")
-# print(reshape_pvt.tail().round(2))
-
-"""
-mall_customers_df["group_age"] = np.where(mall_customers_df["Age"] <= 35, "18-35",
-                                          np.where(mall_customers_df["Age"] <= 47, "36-47",
-                                          np.where(mall_customers_df["Age"] <= 58, "48-58", "59-70")))
+reshape_pvt = pd.pivot_table(mall_customers_df, index=["Age"], columns=["Gender"]).fillna("No Data")
+reshape_pvt.tail().round(2)
 
 
-grouped_df = mall_customers_df.groupby(["group_age", "Gender"])\
-    .agg({"CustomerID": ["count"],
-          "Annual Income (k$)": ["mean"]}).sort_values(("Annual Income (k$)", "mean"),
-                                                       ascending=False)
+mall_customers_df["age_group"] = np.where(mall_customers_df["Age"] < 30, "18-29",
+                                          np.where(mall_customers_df["Age"] < 45, "30-44",
+                                                   np.where(mall_customers_df["Age"] < 55, "45-54", "55+")))
+
+
+grouped_df = mall_customers_df.groupby(["age_group", "Gender"])\
+    .agg({"Annual Income (k$)": ["count", "mean"]}).round(2)
 
 print(grouped_df)
-grouped_df = mall_customers_df.groupby(["group_age", "Gender"])\
+grouped_df = mall_customers_df.groupby(["age_group", "Gender"])\
     .agg({"Annual Income (k$)": ["mean"]}).sort_values(("Annual Income (k$)", "mean"),
                                                        ascending=False)
 
@@ -85,21 +83,21 @@ eda.plot_grouped_by(grouped_df)
 """
 
 
-# X = mall_customers_df.iloc[:, [3, 4]].values
-# kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
-# y_kmeans = kmeans.fit_predict(X)
-# mall_customers_df["Spen_Class"] = y_kmeans
-#
-# eda.visualize_advanced_scatter_plot(mall_customers_df,'Annual Income (k$)', 'Spending Score (1-100)', "Spen_Class")
+X = mall_customers_df.iloc[:, [3, 4]].values
+kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
+y_kmeans = kmeans.fit_predict(X)
+mall_customers_df["Spen_Class"] = y_kmeans
+title = "Relation between spending score, annual income as spen class"
+subtitle = "classification data"
+# eda.visualize_advanced_scatter_plot(mall_customers_df, 'Annual Income (k$)', 'Spending Score (1-100)', "Spen_Class",
+#                                     title, subtitle)
 
+# 0 - Low Income 15 - 40  and Low spending score 1 - 40
+# 1 - Low Income 15 - 40 and High spending score 60 -99
+# 2 - Middle Income 40 - 70 and middle spending score 40 -60
+# 3 - High Income 70 - 99 and Low spending score 1 -40
+# 4 - High Income 70 -99 and High spending score 60 -99
 
-"""
-    0 - Low Income 15 - 40  and Low spending score 1 - 40 
-    1 - Low Income 15 - 40 and High spending score 60 -99
-    2 - Middle Income 40 - 70 and middle spending score 40 -60 
-    3 - High Income 70 - 99 and Low spending score 1 -40 
-    4 - High Income 70 -99 and High spending score 60 -99
-"""
 
 annual_income = mall_customers_df["Annual Income (k$)"]
 spending_score = mall_customers_df["Spending Score (1-100)"]
@@ -118,18 +116,31 @@ conditions = [
 choices = ["0", "1", "2", "3", "4"]
 
 mall_customers_df["Spen_Class"] = np.select(conditions, choices, None)
-culster_data = mall_customers_df.dropna()
-
-# title = "Relation between spending score, annual income as spen class"
-# subtitle = "classification data"
-# eda.visualize_advanced_scatter_plot(culster_data,'Spending Score (1-100)','Annual Income (k$)',"Spen_Class",
+clustering_df = mall_customers_df.dropna()
+# print(clustering_df)
+title = "Relation between spending score, annual income as spen class"
+subtitle = "classification data"
+# eda.visualize_advanced_scatter_plot(clustering_df,'Spending Score (1-100)','Annual Income (k$)',"Spen_Class",
 #                                     title, subtitle)
 
+campaign1 = mall_customers_df.loc[mall_customers_df["Spen_Class"] == "4"]
+# print(campaign1.head())
 
-campaign1 = culster_data.loc[culster_data["Spen_Class"] == "4"]
+title = "count of gender by spending score"
+subtitle = "gender as High Income & High Spending Score"
 
-title = "count of Annual income by spending score"
-subtitle = " "
+eda.vis_top_ten_values(campaign1, "Gender", "Spending Score (1-100)", [17], title, subtitle)
 
-eda.vis_top_ten_values(campaign1, "Spending Score (1-100)", "Annual Income (k$)", [6, 3], title, subtitle)
-# print(campaign1["Spending Score (1-100)"].count())
+
+
+def highlight_cells(value):
+    if value == 4 and value == 2:
+        color = "yellow"
+    else:
+        color = " "
+    return "background-color: {}".format(color)
+
+
+
+
+

@@ -87,27 +87,32 @@ Utilize the group by function to calculate the average age, annual income, and s
 
 
 # 4.2) Where function
-    mall_customers_df["group_age"] = np.where(mall_customers_df["Age"] <= 35, "18-35",
-                                          np.where(mall_customers_df["Age"] <= 47, "36-47",
-                                          np.where(mall_customers_df["Age"] <= 58, "48-58", "59-70")))
+    mall_customers_df["age_group"] = np.where(mall_customers_df["Age"] < 30, "18-29",
+                                          np.where(mall_customers_df["Age"] < 45, "30-40",
+                                          np.where(mall_customers_df["Age"] < 55, "45-54", "55+")))
 
 
-    grouped_df = mall_customers_df.groupby(["group_age", "Gender"]).agg({"CustomerID": ["count"],
-                                                                     "Annual Income (k$)": ["mean"]})
+    grouped_df = mall_customers_df.groupby(["age_group", "Gender"])\
+    .agg({"Annual Income (k$)": ["count", "mean"]}).round(2)
 
 
-                       CustomerID      Annual Income (k$)
-                           count               mean
-    group_age  Gender                              
-   
-    18-35      Female         57            55.947368
-               Male           41            64.292683
-    36-47      Female         27            71.037037
-               Male           18            70.777778
-    48-58      Female         20            55.450000
-               Male           13            57.307692
-    59-70      Female          8            52.500000
-               Male           16            51.312500
+                                       Annual Income (k$) 
+
+                                        count   mean
+
+        age_group Gender   
+
+        18-29     Female                 29     50.66
+                  Male                   26     54.65
+        
+        30-44     Female                 46     66.17
+                  Male                   30     75.90
+
+        45-54     Female                 25     58.88
+                  Male                   14     58.21
+
+        55+       Female                 12     54.25
+                  Male                   18     53.50
 
 
 ![Group Age](charts/plot_new_column.png)
@@ -116,35 +121,30 @@ Utilize the group by function to calculate the average age, annual income, and s
 
 The Spen_class column will class the data to five groups as follows:
 
-    0 - Low Income 15 - 40  and Low spending score 1 - 40 
-    1 - Low Income 15 - 40 and High spending score 60 -99
-    2 - Middle Income 40 - 70 and middle spending score 40 -60 
-    3 - High Income 70 - 99 and Low spending score 1 -40 
-    4 - High Income 70 -99 and High spending score 60 -99 
+    X = mall_customers_df.iloc[:, [3, 4]].values
+    kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
+    y_kmeans = kmeans.fit_predict(X)
+    mall_customers_df["Spen_Class"] = y_kmeans
+   
+    title = "Relation between spending score, annual income as spen class"
+    subtitle = "classification data"
+   
+    eda.visualize_advanced_scatter_plot(mall_customers_df, 'Annual Income (k$)', 'Spending Score (1-100)', "Spen_Class",
+                                        title, subtitle)
+        
 
-    
-
-        CustomerID  Gender   Age     Annual Income (k$)  Spending Score (1-100)     Spen_Class
-    0           1    Male     19           15                      39                   0
-    1           2    Male     21           15                      81                   3
-    2           3    Female   20           16                       6                   0
-    3           4    Female   23           16                      77                   3
-    4           5    Female   31           17                      40                   0
-
+        
 
 ![Classification Data](charts/classification_Data.png)
 
 
 ###  DataSet with High Income & High Spending Score 
 
-            CustomerID  Gender   Age       Annual Income (k$)      Spending Score (1-100)   Spen_Class
-        123         124    Male   39                  69                      91                4
-        125         126  Female   31                  70                      77                4
-        127         128    Male   40                  71                      95                4
-        129         130    Male   38                  71                      75                4
-        131         132    Male   39                  71                      75                4
-        133         134  Female   31                  72                      71                4
-        135         136  Female   29                  73                      88                4
-        137         138    Male   32                  73                      73                4
-        139         140  Female   35                  74                      72                4
-        141         142    Male   32                  75                      93                4
+                      CustomerID  Gender  Age  Annual Income (k$)  Spending Score (1-100) Spen_Class
+                123         124    Male   39                  69                      91          4
+                125         126  Female   31                  70                      77          4
+                127         128    Male   40                  71                      95          4
+                129         130    Male   38                  71                      75          4
+                131         132    Male   39                  71                      75          4 
+
+![High Income High Spending Score](charts/campaign.png)

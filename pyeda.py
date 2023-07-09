@@ -618,7 +618,7 @@ def vis_top_ten_values(data, first_column: str, by_second_column: str, color_bar
     """
     fig, ax = plt.subplots(figsize=(10, 6))
     plt.suptitle(title.title(),
-                 fontweight="heavy", x=0.059, y=0.98, ha="left", fontsize="16",
+                 fontweight="heavy", x=0.085, y=0.98, ha="left", fontsize="16",
                  fontfamily="sans-serif",
                  color=black_grad[0]
                  )
@@ -641,3 +641,11 @@ def vis_top_ten_values(data, first_column: str, by_second_column: str, color_bar
     sns.despine(right=True, top=True, left=True)
     plt.tight_layout()
     plt.show()
+
+
+def highlight_cells(value):
+    if value == 4:
+        color = "yellow"
+    else:
+        color = ""
+    return "background-color: {}".format(color)
