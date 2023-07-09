@@ -641,11 +641,3 @@ def vis_top_ten_values(data, first_column: str, by_second_column: str, color_bar
     sns.despine(right=True, top=True, left=True)
     plt.tight_layout()
     plt.show()
-
-
-def highlight_cells(value):
-    if value == 4:
-        color = "yellow"
-    else:
-        color = ""
-    return "background-color: {}".format(color)

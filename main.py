@@ -82,7 +82,7 @@ grouped_df = mall_customers_df.groupby(["age_group", "Gender"])\
 eda.plot_grouped_by(grouped_df)
 """
 
-
+"""
 X = mall_customers_df.iloc[:, [3, 4]].values
 kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
 y_kmeans = kmeans.fit_predict(X)
@@ -131,14 +131,13 @@ subtitle = "gender as High Income & High Spending Score"
 
 eda.vis_top_ten_values(campaign1, "Gender", "Spending Score (1-100)", [17], title, subtitle)
 
+"""
+X = mall_customers_df.iloc[:, [3, 4]].values
+kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
+y_kmeans = kmeans.fit_predict(X)
+mall_customers_df["Spen_Class"] = y_kmeans
 
-
-def highlight_cells(value):
-    if value == 4 and value == 2:
-        color = "yellow"
-    else:
-        color = " "
-    return "background-color: {}".format(color)
+# print(mall_customers_df.head())
 
 
 
