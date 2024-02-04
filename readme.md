@@ -119,7 +119,7 @@ Utilize the group by function to calculate the average age, annual income, and s
 
 # 4.3) Clustering 
 
-![The_Elbow_Method](charts/elbow_method.png)
+![The Elbow Method](charts/elbow_method.png)
         
 
 ![Classification Data](charts/classification_Data.png)
