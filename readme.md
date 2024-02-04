@@ -1,11 +1,11 @@
-# Mall Customers DataSet 
-
 * Number Of Customers **_200_**
 * The Average Annual Income Per Customer **_60.56_**
 * The Median Age Of Customers **_36_**
 * The Standard Deviations For Age **_13.97_** And The Std For Annual Income **_26.26_**
+  
+---
 
-# (2) Analysis
+# (1) Analysis
 ## Distribution
 
 ![Annual Distribution!](charts/annual_dist.png)
@@ -46,18 +46,18 @@
 
 ![Annual Income Grouped by Gender](charts/boxplot_annual_income.png)
 
+---
 
-
-# (3) Bi-variate Analysis
-## (3.1) Scatter plot
+# (2) Bi-variate Analysis
+## (2.1) Scatter plot
 
 ![Scatter Plot](charts/scatter_plot.png)
 
-## (3.2) Pair plot
+## (2.2) Pair plot
 
 ![Pair Plot](charts/pairplot.png)
 
-## (3.3) Group by
+## (2.3) Group by
 Utilize the group by function to calculate the average age, annual income, and spending score for each gender
 
              Age        Annual Income (k$)       Spending Score (1-100)
@@ -69,12 +69,14 @@ Utilize the group by function to calculate the average age, annual income, and s
 ![Group By](charts/highest_Avg.png)
 ![Group By](charts/highest_annual.png)
 
-## Heat Map
+---
+# (3) Heat Map
 
 ![Heat Map](charts/heatmap.png)
 
+---
 
-# 4.1) Pivot
+# (4.1) Pivot
 
                  Annual Income (k$)       CustomerID            Spending Score (1-100)      
     Gender             Female  Male     Female       Male                 Female  Male
@@ -86,7 +88,7 @@ Utilize the group by function to calculate the average age, annual income, and s
     70                No Data  47.5    No Data       66.0                No Data  55.5
 
 
-# 4.2) Where function
+# (4.2) Where function
     mall_customers_df["age_group"] = np.where(mall_customers_df["Age"] < 30, "18-29",
                                           np.where(mall_customers_df["Age"] < 45, "30-40",
                                           np.where(mall_customers_df["Age"] < 55, "45-54", "55+")))
@@ -117,7 +119,9 @@ Utilize the group by function to calculate the average age, annual income, and s
 
 ![Group Age](charts/plot_new_column.png)
 
-# 4.3) Clustering 
+---
+
+# (5) Clustering 
 
 ![The Elbow Method](charts/elbow_method.png)
         
