@@ -49,15 +49,15 @@
 
 
 # (3) Bi-variate Analysis
-## 3.1) Scatter plot
+## (3.1) Scatter plot
 
 ![Scatter Plot](charts/scatter_plot.png)
 
-## 3.2) Pair plot
+## (3.2) Pair plot
 
 ![Pair Plot](charts/pairplot.png)
 
-## 3.3) Groupby
+## (3.3) Group by
 Utilize the group by function to calculate the average age, annual income, and spending score for each gender
 
              Age        Annual Income (k$)       Spending Score (1-100)
@@ -117,34 +117,10 @@ Utilize the group by function to calculate the average age, annual income, and s
 
 ![Group Age](charts/plot_new_column.png)
 
-# 4.3) Classification
+# 4.3) Clustering 
 
-The Spen_class column will class the data to five groups as follows:
-
-    X = mall_customers_df.iloc[:, [3, 4]].values
-    kmeans = KMeans(n_clusters=5, init='k-means++', max_iter=300, n_init=10, random_state=0)
-    y_kmeans = kmeans.fit_predict(X)
-    mall_customers_df["Spen_Class"] = y_kmeans
-   
-    title = "Relation between spending score, annual income as spen class"
-    subtitle = "classification data"
-   
-    eda.visualize_advanced_scatter_plot(mall_customers_df, 'Annual Income (k$)', 'Spending Score (1-100)', "Spen_Class",
-                                        title, subtitle)
-        
-
+![The_Elbow_Method](charts/elbow_method.png)
         
 
 ![Classification Data](charts/classification_Data.png)
 
-
-###  DataSet with High Income & High Spending Score 
-
-                      CustomerID  Gender  Age  Annual Income (k$)  Spending Score (1-100) Spen_Class
-                123         124    Male   39                  69                      91          4
-                125         126  Female   31                  70                      77          4
-                127         128    Male   40                  71                      95          4
-                129         130    Male   38                  71                      75          4
-                131         132    Male   39                  71                      75          4 
-
-![High Income High Spending Score](charts/campaign.png)

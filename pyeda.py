@@ -81,7 +81,7 @@ def display_column_types(data):
     print(f"Numerical Columns: {numeric_variable_lst}\nCategorical Columns: {categorical_variable_lst}")
 
 
-def visualize_distribution_of_numeric_col(data_frame, column_name: str, bins: int) -> None:
+def visualize_distribution_of_numeric_col(data_frame, column_name: str, bins: int, img_name: str) -> None:
     """
     Visualize the distribution of a numeric column.
 
@@ -90,6 +90,8 @@ def visualize_distribution_of_numeric_col(data_frame, column_name: str, bins: in
     :param column_name: str
 
     :param bins: int
+
+    :param img_name: str
     
     :return: Histogram, boxplot, q-q plot, skewness and kurtosis values
     
@@ -128,20 +130,23 @@ def visualize_distribution_of_numeric_col(data_frame, column_name: str, bins: in
     ax_3 = sns.boxplot(data_frame, y=column_name, color=colors[1], boxprops=dict(alpha=0.8), linewidth=1.5)
 
     plt.ylabel(column_name, fontweight="regular", fontsize=11, fontfamily="sans-serif", color=black_grad[1])
-    plt.tight_layout(rect=[0, 0.04, 1, 1.025])
+    plt.tight_layout(rect=(0, 0.04, 1, 1.025))
     plt.grid(axis="y", alpha=0)
     plt.grid(axis="x", alpha=0)
     ax_3.set(frame_on=False)
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def visualize_distribution_of_categorical_col(data_frame, column_name: str):
+def visualize_distribution_of_categorical_col(data_frame, column_name: str, img_name: str):
     """
     Visualize the distribution of a categorical column.
 
     :param data_frame: variable
 
     :param column_name: str
+
+    :param img_name: str
 
     :return: histogram, and pie charts
 
@@ -164,8 +169,8 @@ def visualize_distribution_of_categorical_col(data_frame, column_name: str):
     # Pie Chart
     plt.subplot(1, 2, 1)
 
-    labels = data_frame[column_name].unique()
-    plt.pie(data_frame[column_name].value_counts(), colors=pastel, pctdistance=0.7, autopct="%.2f%%", labels=labels,
+    # labels = data_frame[column_name].unique()
+    plt.pie(data_frame[column_name].value_counts(), colors=pastel, pctdistance=0.7, autopct="%.2f%%",
             wedgeprops=dict(alpha=0.8, edgecolor=colors[0]), textprops={"fontsize": 12}, startangle=90)
     centre = plt.Circle((0, 0), 0.45, fc="white", edgecolor=colors[0])
     plt.gcf().gca().add_artist(centre)
@@ -180,14 +185,15 @@ def visualize_distribution_of_categorical_col(data_frame, column_name: str):
     plt.ylabel(None)
     plt.xticks(rotation=45)
     ax.set_yticklabels([])
-    plt.tight_layout(rect=[0, 0.04, 1, 1.025])
+    plt.tight_layout(rect=(0, 0.04, 1, 1.025))
     plt.grid(axis="y", alpha=0.1)
     plt.grid(axis="x", alpha=0)
     ax.set(frame_on=False)
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def visualize_pair_plot(data, numerical_columns: list, by_categorical_col: str):
+def visualize_pair_plot(data, numerical_columns: list, by_categorical_col: str, image_name: str):
     """
     Visualize the relationship between multiple numeric columns by categorical column.
 
@@ -196,6 +202,8 @@ def visualize_pair_plot(data, numerical_columns: list, by_categorical_col: str):
     :param numerical_columns: list
 
     :param by_categorical_col: str
+
+    :param image_name: str
 
     :return: pair plot
     """
@@ -211,10 +219,11 @@ def visualize_pair_plot(data, numerical_columns: list, by_categorical_col: str):
     labels = g._legend_data.keys()
     g.fig.legend(handles=handles, labels=labels, loc="upper center", ncol=4)
     g.fig.subplots_adjust(top=0.99, bottom=0.20, )
+    plt.savefig(image_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def visualize_kde(data, first_numeric: str, categorical_col: str,
+def visualize_kde(data, first_numeric: str, categorical_col: str, img_name: str,
                   title: str = "Add Chart Title",
                   subtitle: str = "Explain ur data viz by subtitle"
                   ):
@@ -226,6 +235,8 @@ def visualize_kde(data, first_numeric: str, categorical_col: str,
     :param first_numeric: str
 
     :param categorical_col: str
+
+    :param img_name: str
 
     :param title: str
 
@@ -248,7 +259,7 @@ def visualize_kde(data, first_numeric: str, categorical_col: str,
     plt.grid(axis="y", alpha=0)
     plt.grid(axis="x", alpha=0)
     ax.set(frame_on=False)
-
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
@@ -263,7 +274,7 @@ def display_describe_data(data) -> None:
     print(data.describe(include="all").round(2))
 
 
-def visualize_boxplot(data, numeric_column: str, categorical_column: str,
+def visualize_boxplot(data, numeric_column: str, categorical_column: str, image_name: str,
                       title: str = "Add Chart Title",
                       subtitle: str = "Explain ur data viz by subtitle"):
     """
@@ -276,6 +287,8 @@ def visualize_boxplot(data, numeric_column: str, categorical_column: str,
     :param numeric_column: str
 
     :param categorical_column: str
+
+    :param image_name: str
 
     :param title: str
 
@@ -314,10 +327,11 @@ def visualize_boxplot(data, numeric_column: str, categorical_column: str,
     plt.grid(axis="x", alpha=0)
     plt.grid(axis="y", alpha=0.1)
     box_plot.set(frame_on=False)
+    plt.savefig(image_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def visualize_basic_scatter_plot(data, first_column: str, second_column: str,
+def visualize_basic_scatter_plot(data, first_column: str, second_column: str, image_name: str,
                                  subtitle: str = "Explain ur data viz by subtitle"):
     """
     Visualize the relationship between two numeric columns.
@@ -327,6 +341,8 @@ def visualize_basic_scatter_plot(data, first_column: str, second_column: str,
     :param first_column: str
     
     :param second_column: str
+
+    :param image_name: str
 
     :param subtitle: str
     
@@ -349,7 +365,8 @@ def visualize_basic_scatter_plot(data, first_column: str, second_column: str,
     plt.ticklabel_format(style="plain", axis="both")
     plt.grid(axis="both", alpha=0.4, lw=0.2)
     ax.set(frame_on=False)
-    plt.tight_layout(rect=[0, 0.04, 1, 1.025])
+    plt.tight_layout(rect=(0, 0.04, 1, 1.025))
+    plt.savefig(image_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
@@ -387,7 +404,7 @@ def visualize_advanced_scatter_plot(data, first_numeric: str, second_numeric: st
     plt.title(subtitle.capitalize(),
               fontweight="heavy", fontsize=12, fontfamily="sans-serif", color=colors[0], loc="left", pad=10)
 
-    ax = sns.scatterplot(data=data, x=first_numeric, y=second_numeric, hue=categorical_col, palette="tab10",
+    ax = sns.scatterplot(data=data, x=first_numeric, y=second_numeric, hue=categorical_col, cmap="rainbow",
                          legend="full")
 
     plt.xlabel(first_numeric, fontweight="bold", fontsize=11, fontfamily="sans-serif", color=black_grad[1])
@@ -397,11 +414,11 @@ def visualize_advanced_scatter_plot(data, first_numeric: str, second_numeric: st
     ax.legend(title=categorical_col.title(), bbox_to_anchor=(0.98, 0.90), loc="upper left", frameon=True)
     ax.set(frame_on=False)
     plt.grid(axis="x", alpha=0)
-    plt.tight_layout(rect=[0, 0.04, 1, 1.025])
+    plt.tight_layout(rect=(0, 0.04, 1, 1.025))
     plt.show()
 
 
-def visualize_multi_numeric_columns_avg(data, numerical_col: list, categorical_col: str,
+def visualize_multi_numeric_columns_avg(data, numerical_col: list, categorical_col: str, img_name: str,
                                         title: str = "Add chart title ",
                                         subtitle: str = "Explain ur data viz by subtitle "):
     """
@@ -413,6 +430,8 @@ def visualize_multi_numeric_columns_avg(data, numerical_col: list, categorical_c
     :param numerical_col: list
 
     :param categorical_col: str
+
+    :param img_name: str
 
     :param title: str
 
@@ -437,14 +456,17 @@ def visualize_multi_numeric_columns_avg(data, numerical_col: list, categorical_c
     plt.xticks(rotation=45)
     axs.legend(title=f"{categorical_col.title()}",
                bbox_to_anchor=(1.2, 1), shadow=True, title_fontsize="x-large")
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def vis_heatmap(data):
+def vis_heatmap(data, img_name: str):
     """
     Visualize the correlation between multiple numeric columns.
     
     :param data: variable
+
+    :param img_name: str
     
     :return: heatmap
     
@@ -458,11 +480,12 @@ def vis_heatmap(data):
                  )
     sns.heatmap(numeric_features.corr(), cmap="Reds", annot=True, linewidths=0.1)
 
-    plt.tight_layout(rect=[0, 0.04, 1, 1.025])
+    plt.tight_layout(rect=(0, 0.04, 1, 1.025))
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def vis_highest_percentage_datapoints(data, first_categorical_col: str, second_categorical_col: str,
+def vis_highest_percentage_datapoints(data, first_categorical_col: str, second_categorical_col: str, img_name: str,
                                       subtitle: str = "explain ur data viz by subtitle "):
     """
     Visualize the highest percentage of datapoint values,
@@ -476,6 +499,8 @@ def vis_highest_percentage_datapoints(data, first_categorical_col: str, second_c
     :param first_categorical_col: str
 
     :param second_categorical_col: str
+
+    :param img_name: str
 
     :param subtitle: str
 
@@ -514,10 +539,11 @@ def vis_highest_percentage_datapoints(data, first_categorical_col: str, second_c
                color=black_grad[1])
     plt.grid(axis="x", alpha=0)
     plt.grid(axis="y", alpha=0)
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def vis_top_highest_average(data_frame, categorical_column: list, numerical_column: str, avg_numbers: list,
+def vis_top_highest_average(data_frame, categorical_column: list, numerical_column: str, avg_numbers: list, img_name:str,
                             title: str = "Explain ur data viz by subtitle ",
                             subtitle: str = "Explain ur data viz by subtitle "):
     """
@@ -534,6 +560,8 @@ def vis_top_highest_average(data_frame, categorical_column: list, numerical_colu
     :param numerical_column: str
 
     :param avg_numbers: list
+
+    :param img_name: str
 
     :param title: str
 
@@ -564,10 +592,11 @@ def vis_top_highest_average(data_frame, categorical_column: list, numerical_colu
     plt.grid(axis="x", alpha=0)
     ax.set(frame_on=False)
     plt.tight_layout()
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
-def plot_grouped_by(data):
+def plot_grouped_by(data, img_name: str):
     df = data.plot(kind="bar", color=pastel, width=0.8)
     plt.suptitle("the average annual income based on age group and gender ".title(),
                  fontweight="heavy", x=0.035, y=0.98, ha="left", fontsize="16",
@@ -591,6 +620,7 @@ def plot_grouped_by(data):
     plt.ylabel(None)
     plt.xlabel(None)
     df.set_yticklabels([])
+    plt.savefig(img_name, dpi=300, bbox_inches="tight")
     plt.show()
 
 
